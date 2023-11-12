@@ -21,7 +21,6 @@ def save_boxscore(game_id):
     df = pd.DataFrame(game['rowSet'], columns = game['headers']) 
     os.makedirs('data', exist_ok=True)  
     df.to_csv('data/'+str(game_id)+'.csv', index=False)  
-
     return df
 
 def calculate_game_score(df):
@@ -37,11 +36,13 @@ def calculate_game_score(df):
 
 def get_max_pm(df):
     teams = set(df['TEAM_ABBREVIATION'])
-    team_1 = df[df['TEAM_ABBREVIATION'] == teams.pop()]
-    team_2 = df[df['TEAM_ABBREVIATION'] == teams.pop()]
-    return(team_2)
-
+    team_1_name = teams.pop()
+    team_2_name = teams.pop()
+    team_1 = df[df['TEAM_ABBREVIATION'] == team_1_name]
+    team_2 = df[df['TEAM_ABBREVIATION'] == team_2_name]
+    print(team_1_name + " SCORED " + str(team_1['PTS'].sum()))
+    print(team_2_name + " SCORED " + str(team_2['PTS'].sum()))
 
 for game_id in get_game_ids():
     df = save_boxscore(game_id)
-    print(get_max_pm(df))
+    get_max_pm(df)
