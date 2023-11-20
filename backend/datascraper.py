@@ -25,7 +25,7 @@ def save_boxscore(game_id):
         game = boxscoretraditionalv2.BoxScoreTraditionalV2(game_id=game_id).get_dict()['resultSets'][0]
         df = pd.DataFrame(game['rowSet'], columns = game['headers']) 
         os.makedirs('data/api-fetch', exist_ok=True)  
-        df.to_csv('data/api-fetch'+str(game_id)+'.csv', index=False)  
+        df.to_csv('data/api-fetch/'+str(game_id)+'.csv', index=False)  
 
     return df
 
@@ -97,13 +97,14 @@ def build_row(team_name, team_pts, team_victory, best_pm, worst_pm, best_gs, wor
     best_gs['PLAYER_NAME'], best_gs['PTS'], best_gs['REB'], best_gs['AST'], best_gs['PLUS_MINUS'], best_gs['MIN'],
     worst_gs['PLAYER_NAME'], worst_gs['PTS'], worst_gs['REB'], worst_gs['AST'], worst_gs['PLUS_MINUS'], worst_gs['MIN']]
 
-for game_id in get_game_ids():
-    df = save_boxscore(game_id)
-    #Add game score
-    df['GAME_SCORE'] = df.apply(calculate_game_score, axis = 1)
-    df['MIN'] = df.apply(cast_minutes, axis = 1)
+def generate_api_dataframes():
+    for game_id in get_game_ids():
+        df = save_boxscore(game_id)
+        #Add game score
+        df['GAME_SCORE'] = df.apply(calculate_game_score, axis = 1)
+        df['MIN'] = df.apply(cast_minutes, axis = 1)
 
-    #Filter out players who havent played enough (well say 10 minutes for now but this may change)
-    df = df[df['MIN'] > 10]
+        #Filter out players who havent played enough (well say 10 minutes for now but this may change)
+        df = df[df['MIN'] > 10]
 
-    generate_api_dataframe(df)
+        generate_api_dataframe(df)
