@@ -1,5 +1,6 @@
 from flask import Flask, Response, request
-from helperfunctions import load_all_games, load_all_game_ids, load_game_by_id
+from helperfunctions import load_all_games, load_all_game_ids, load_game_by_id, delete_previous_response_data
+from datascraper import generate_api_dataframes
 api = Flask(__name__)
 
 @api.route('/profile')
@@ -21,3 +22,13 @@ def get_game():
     id = args.get('id')
     df = load_game_by_id(id)
     return Response(df.to_json(orient="records"), mimetype='application/json')
+
+@api.route('/clear')
+def clear_games():
+    delete_previous_response_data()
+    return "SUCCESFULLY DELETED GAME DATA"
+
+@api.route('/fetch')
+def fetch_games():
+    generate_api_dataframes()
+    return "SUCCESFULLY FETCHED GAME DATA"

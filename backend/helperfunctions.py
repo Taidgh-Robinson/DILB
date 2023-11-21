@@ -21,11 +21,10 @@ def load_all_game_ids():
     onlyfiles = [f for f in listdir(RESP_PATH) if isfile(join(RESP_PATH, f))]
     return [f.split(".")[0] for f in onlyfiles]
 
-
 def delete_previous_response_data():
     onlyfiles = [f for f in listdir(RESP_PATH) if isfile(join(RESP_PATH, f))]
     for f in onlyfiles:
-        remove(path+"/"+f)
+        remove(RESP_PATH+"/"+f)
     path = "data/api-fetch"
     onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
     for f in onlyfiles:

@@ -1,23 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from "axios";
 import logo from './logo.svg';
 import './App.css';
+import {Game} from './GameComponent'
 
 function App() {
 
    // new line start
   const [profileData, setProfileData] = useState(null)
+  const [isLoading, setLoading] = useState(true);
 
   function getData() {
     axios({
       method: "GET",
-      url:"/profile",
+      url:"/games",
     })
     .then((response) => {
-      const res =response.data
+      const res = response.data
       setProfileData(({
-        profile_name: res.name,
-        about_me: res.about}))
+        res: res}))
+        setLoading(false);
     }).catch((error) => {
       if (error.response) {
         console.log(error.response)
@@ -26,32 +28,18 @@ function App() {
         }
     })}
     //end of new line 
+  useEffect(() => {
+      getData()
+    }, [])
 
+  if (isLoading) {
+      return <div className="App">Loading...</div>;
+  }
+
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-        {/* new line start*/}
-        <p>To get your profile details: </p><button onClick={getData}>Click me</button>
-        {profileData && <div>
-              <p>Profile name: {profileData.profile_name}</p>
-              <p>About me: {profileData.about_me}</p>
-            </div>
-        }
-         {/* end of new line */}
-      </header>
+        {profileData.res.map(d => (<Game id={d}></Game>))} 
     </div>
   );
 }
