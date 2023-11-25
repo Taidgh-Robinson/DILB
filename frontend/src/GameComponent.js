@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import Accordion from 'react-bootstrap/Accordion';
 
 export function Game(props){
   
@@ -39,9 +40,20 @@ export function Game(props){
   
     return(
       <div>
-      <h2>HOME TEAM: {profileData.team1Name} - {profileData.team1Points}</h2>
-      <h2>AWAY TEAM: {profileData.team2Name} - {profileData.team2Points}</h2>
-      <hr></hr>
+    <Accordion className="text-center">
+      <Accordion.Item eventKey="0">
+        <Accordion.Header className="text-center">{profileData.team1Name} - {profileData.team1Points} @ {profileData.team2Name} - {profileData.team2Points} </Accordion.Header>
+        <Accordion.Body>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </Accordion.Body>
+      </Accordion.Item>
+      </Accordion>
       </div>
     )
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
-import logo from './logo.svg';
 import './App.css';
 import {Game} from './GameComponent'
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
 
