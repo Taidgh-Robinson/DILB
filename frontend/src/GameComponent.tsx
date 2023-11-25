@@ -2,33 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Accordion from 'react-bootstrap/Accordion';
 
-export function Game(props){
+type gameProps = {
+    id: string
+}
+
+interface game {
+  teamName: string; 
+  teamPoints: string;
+}
+
+export function Game(props : gameProps){
   
-  const [profileData, setProfileData] = useState(null)
+  const [profileData, setProfileData] = useState<game[] | null>(null)
   const [isLoading, setLoading] = useState(true);
 
   function getData() {
-    axios({
-      method: "GET",
-      url:"/game",
-      params: {id: props.id}
-    })
-    .then((response) => {
-      const res = response.data
-      setProfileData(({
-        team1Name: res[0].TEAM_NAME,
-        team1Points: res[0].TEAM_PTS,
-        team2Name: res[1].TEAM_NAME,
-        team2Points: res[1].TEAM_PTS}))
-      setLoading(false);
+    axios.get<game[]>('/game', { params: { id: props.id } })
+        .then(response => {
+            console.log(response.data);
+            let arr = response.data.map((val: any): game => ({
+              teamName: val.TEAM_NAME,
+              teamPoints: val.TEAM_PTS
+           }));
 
-    }).catch((error) => {
-      if (error.response) {
-        console.log(error.response)
-        console.log(error.response.status)
-        console.log(error.response.headers)
-        }
-    })}
+            setProfileData(arr);
+            setLoading(false);
+        });
+  }
+
     
     useEffect(() => {
       getData()
@@ -38,11 +39,15 @@ export function Game(props){
       return <div className="App">Loading...</div>;
     }
   
+    if(!profileData){
+      return; 
+    }
+
     return(
       <div>
     <Accordion className="text-center">
       <Accordion.Item eventKey="0">
-        <Accordion.Header className="text-center">{profileData.team1Name} - {profileData.team1Points} @ {profileData.team2Name} - {profileData.team2Points} </Accordion.Header>
+        <Accordion.Header className="text-center">{profileData[0].teamName} - {profileData[0].teamPoints} @ {profileData[1].teamName} - {profileData[1].teamPoints} </Accordion.Header>
         <Accordion.Body>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
