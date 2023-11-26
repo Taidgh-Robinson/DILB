@@ -1,3 +1,4 @@
 export type datatableProps = {
-    title: string; 
+    headers: string[];
+    values: string[];
 }

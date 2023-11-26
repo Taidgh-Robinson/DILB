@@ -24,10 +24,10 @@ export type game = {
     bestGSAst: string;
     bestGSGs: string;
     bestGSMin: string;
-    worstGSNName: string;
+    worstGSName: string;
     worstGSPts: string;
     worstGSReb: string;
-    worstGSAST: string;
+    worstGSAst: string;
     worstGSGs: string;
     worstGSMin: string;
 }
