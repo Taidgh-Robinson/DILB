@@ -2,40 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
-
-type gameProps = {
-  id: string
-}
-
-interface game {
-  teamName: string;
-  teamPoints: string;
-  teamVictory: string;
-  bestPMName: string;
-  bestPMPts: string;
-  bestPMReb: string;
-  bestPMAst: string;
-  bestPMPm: string;
-  bestPMMin: string;
-  worstPMName: string;
-  worstPMPts: string;
-  worstPMReb: string;
-  worstPMAst: string;
-  worstPMPm: string;
-  worstPMMin: string;
-  bestGSName: string;
-  bestGSPts: string;
-  bestGSReb: string;
-  bestGSAst: string;
-  bestGSGs: string;
-  bestGSMin: string;
-  worstGSNName: string;
-  worstGSPts: string;
-  worstGSReb: string;
-  worstGSAST: string;
-  worstGSGs: string;
-  worstGSMin: string;
-}
+import './GameComponent.css'
+import { gameProps, game } from './GameComponentTypes';
 
 export function Game(props: gameProps) {
 
@@ -89,9 +57,9 @@ export function Game(props: gameProps) {
 
   return (
     <div>
-      <Accordion className="text-center">
+      <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header className="text-center">{gameData[0].teamName} - {gameData[0].teamPoints} @ {gameData[1].teamName} - {gameData[1].teamPoints} </Accordion.Header>
+          <Accordion.Header className="text-center" >{gameData[0].teamName} - {gameData[0].teamPoints} @ {gameData[1].teamName} - {gameData[1].teamPoints} </Accordion.Header>
           <Accordion.Body>
             <div className="container">
               <h3>Best Player by Plus Minus</h3>
