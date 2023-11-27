@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Accordion from 'react-bootstrap/Accordion';
 import './GameComponent.css'
-import { gameProps, game } from './GameComponentTypes';
+import { gameProps, game, mapCodeToName, mapCodeToLogo } from './GameComponentTypes';
 import { Datatable } from '../Datatable/Datatable';
 
 export function Game(props: gameProps) {
@@ -56,52 +56,60 @@ export function Game(props: gameProps) {
   }
 
   return (
-    <div>
+    <div style={{ textAlign: "center" }} >
       <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header className="text-center" >{gameData[0].teamName} - {gameData[0].teamPoints} @ {gameData[1].teamName} - {gameData[1].teamPoints} </Accordion.Header>
+          <Accordion.Header><img className="team-logo" src={mapCodeToLogo(gameData[0].teamName)}></img>{mapCodeToName(gameData[0].teamName)} - {gameData[0].teamPoints} @ {mapCodeToName(gameData[1].teamName)} - {gameData[1].teamPoints} <img className="team-logo" src={mapCodeToLogo(gameData[1].teamName)}></img></Accordion.Header>
           <Accordion.Body>
             <div className="container">
               <div className="row">
                 <h3>Best Player by Plus Minus</h3>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]} values={[gameData[0].bestPMName, gameData[0].bestPMPts, gameData[0].bestPMReb, gameData[0].bestPMAst, gameData[0].bestPMMin, gameData[0].bestPMPm]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]}
+                    values={[gameData[0].bestPMName, gameData[0].bestPMPts, gameData[0].bestPMReb, gameData[0].bestPMAst, gameData[0].bestPMMin, gameData[0].bestPMPm]}></Datatable>
                 </div>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]} values={[gameData[1].bestPMName, gameData[1].bestPMPts, gameData[1].bestPMReb, gameData[1].bestPMAst, gameData[1].bestPMMin, gameData[1].bestPMPm]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]}
+                    values={[gameData[1].bestPMName, gameData[1].bestPMPts, gameData[1].bestPMReb, gameData[1].bestPMAst, gameData[1].bestPMMin, gameData[1].bestPMPm]}></Datatable>
                 </div>
               </div>
               <div className="row">
                 <h3>Best Player by Game Score</h3>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "Game Score"]} values={[gameData[0].bestGSName, gameData[0].bestGSPts, gameData[0].bestGSReb, gameData[0].bestGSAst, gameData[0].bestGSMin, gameData[0].bestGSGs]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "Game Score"]}
+                    values={[gameData[0].bestGSName, gameData[0].bestGSPts, gameData[0].bestGSReb, gameData[0].bestGSAst, gameData[0].bestGSMin, gameData[0].bestGSGs]}></Datatable>
                 </div>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "Game Score"]} values={[gameData[1].bestGSName, gameData[1].bestGSPts, gameData[1].bestGSReb, gameData[1].bestGSAst, gameData[1].bestGSMin, gameData[1].bestGSGs]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "Game Score"]}
+                    values={[gameData[1].bestGSName, gameData[1].bestGSPts, gameData[1].bestGSReb, gameData[1].bestGSAst, gameData[1].bestGSMin, gameData[1].bestGSGs]}></Datatable>
                 </div>
               </div>
               <div className="row">
                 <h3>Worst Player by Plus Minus</h3>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]} values={[gameData[0].worstPMName, gameData[0].worstPMPts, gameData[0].worstPMReb, gameData[0].worstPMAst, gameData[0].worstPMMin, gameData[0].worstPMPm]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]}
+                    values={[gameData[0].worstPMName, gameData[0].worstPMPts, gameData[0].worstPMReb, gameData[0].worstPMAst, gameData[0].worstPMMin, gameData[0].worstPMPm]}></Datatable>
                 </div>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]} values={[gameData[1].worstPMName, gameData[1].worstPMPts, gameData[1].worstPMReb, gameData[1].worstPMAst, gameData[1].worstPMMin, gameData[1].worstPMPm]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "±"]}
+                    values={[gameData[1].worstPMName, gameData[1].worstPMPts, gameData[1].worstPMReb, gameData[1].worstPMAst, gameData[1].worstPMMin, gameData[1].worstPMPm]}></Datatable>
                 </div>
               </div>
               <div className="row">
                 <h3>Worst Player by Game Score</h3>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "GameScore"]} values={[gameData[0].worstGSName, gameData[0].worstGSPts, gameData[0].worstGSReb, gameData[0].worstGSAst, gameData[0].worstGSMin, gameData[0].worstGSGs]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "GameScore"]}
+                    values={[gameData[0].worstGSName, gameData[0].worstGSPts, gameData[0].worstGSReb, gameData[0].worstGSAst, gameData[0].worstGSMin, gameData[0].worstGSGs]}></Datatable>
                 </div>
                 <div className="col-sm">
-                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "GameScore"]} values={[gameData[1].worstGSName, gameData[1].worstGSPts, gameData[1].worstGSReb, gameData[1].worstGSAst, gameData[1].worstGSMin, gameData[1].worstGSGs]}></Datatable>
+                  <Datatable headers={["Name", "Points", "Rebounds", "Assists", "Minutes", "GameScore"]}
+                    values={[gameData[1].worstGSName, gameData[1].worstGSPts, gameData[1].worstGSReb, gameData[1].worstGSAst, gameData[1].worstGSMin, gameData[1].worstGSGs]}></Datatable>
                 </div>
               </div>
             </div>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-    </div>
+    </ div >
   )
 }

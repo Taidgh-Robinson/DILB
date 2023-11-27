@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import './App.css';
-import { Game } from './GameComponent/GameComponent'
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { Game } from '../GameComponent/GameComponent'
 
 function App() {
 
@@ -41,9 +39,14 @@ function App() {
 
 
   return (
-    <div className="App">
-      {gameData.res.map(d => (<Game id={d}></Game>))}
-    </div>
+    <html data-bs-theme="dark" >
+      <div className="App" >
+        <h1>Damn I Love Basketball</h1>
+        <h3>Yestedays basketball, today</h3>
+
+        {gameData.res.map(d => (<Game id={d}></Game>))}
+      </div>
+    </html>
   );
 }
 
