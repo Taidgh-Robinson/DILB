@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from "axios";
 import './App.css';
-import { Game } from '../GameComponent/GameComponent'
+import { Game } from '../Game/Game'
 
 function App() {
 

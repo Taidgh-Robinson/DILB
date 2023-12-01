@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Accordion from 'react-bootstrap/Accordion';
-import './GameComponent.css'
-import { gameProps, game, mapCodeToName, mapCodeToLogo } from './GameComponentTypes';
+import './Game.css'
+import { gameProps, game, mapCodeToName, mapCodeToLogo } from './GameTypes';
 import { Datatable } from '../Datatable/Datatable';
 
 export function Game(props: gameProps) {

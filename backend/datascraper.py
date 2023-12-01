@@ -67,8 +67,8 @@ def generate_api_dataframe(df):
     COLUMNS=['TEAM_NAME', "TEAM_PTS", "TEAM_VIC", 
     "B_PM_NAME", "B_PM_PTS", "B_PM_REB", "B_PM_AST", "B_PM_PM", "B_PM_MIN", 
     "W_PM_NAME", "W_PM_PTS", "W_PM_REB", "W_PM_AST", "W_PM_PM", "W_PM_MIN",
-    "B_GS_NAME", "B_GS_PTS", "B_GS_REB", "B_GS_AST", "B_GS_PM", "B_GS_MIN", 
-    "W_GS_NAME", "W_GS_PTS", "W_GS_REB", "W_GS_AST", "W_GS_PM", "W_GS_MIN"]
+    "B_GS_NAME", "B_GS_PTS", "B_GS_REB", "B_GS_AST", "B_GS_GS", "B_GS_MIN", 
+    "W_GS_NAME", "W_GS_PTS", "W_GS_REB", "W_GS_AST", "W_GS_GS", "W_GS_MIN"]
 
     new_dataframe = pd.DataFrame([team_1_row, team_2_row], 
     columns=COLUMNS)
@@ -94,8 +94,8 @@ def build_row(team_name, team_pts, team_victory, best_pm, worst_pm, best_gs, wor
     return [team_name, team_pts, team_victory,
     best_pm['PLAYER_NAME'], best_pm['PTS'], best_pm['REB'], best_pm['AST'], best_pm['PLUS_MINUS'], best_pm['MIN'],
     worst_pm['PLAYER_NAME'], worst_pm['PTS'], worst_pm['REB'], worst_pm['AST'], worst_pm['PLUS_MINUS'], worst_pm['MIN'],
-    best_gs['PLAYER_NAME'], best_gs['PTS'], best_gs['REB'], best_gs['AST'], best_gs['PLUS_MINUS'], best_gs['MIN'],
-    worst_gs['PLAYER_NAME'], worst_gs['PTS'], worst_gs['REB'], worst_gs['AST'], worst_gs['PLUS_MINUS'], worst_gs['MIN']]
+    best_gs['PLAYER_NAME'], best_gs['PTS'], best_gs['REB'], best_gs['AST'], best_gs['GAME_SCORE'], best_gs['MIN'],
+    worst_gs['PLAYER_NAME'], worst_gs['PTS'], worst_gs['REB'], worst_gs['AST'], worst_gs['GAME_SCORE'], worst_gs['MIN']]
 
 def generate_api_dataframes():
     for game_id in get_game_ids():
