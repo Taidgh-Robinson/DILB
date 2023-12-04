@@ -56,10 +56,12 @@ export function Game(props: gameProps) {
   }
 
   return (
-    <div style={{ textAlign: "center" }} >
+    <div style={{ textAlign: "center" }} className="Game" >
+
+      <h2><img className="team-logo" src={mapCodeToLogo(gameData[0].teamName)}></img>{mapCodeToName(gameData[0].teamName)} - {gameData[0].teamPoints} @ {mapCodeToName(gameData[1].teamName)} - {gameData[1].teamPoints} <img className="team-logo" src={mapCodeToLogo(gameData[1].teamName)}></img></h2>
       <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header><img className="team-logo" src={mapCodeToLogo(gameData[0].teamName)}></img>{mapCodeToName(gameData[0].teamName)} - {gameData[0].teamPoints} @ {mapCodeToName(gameData[1].teamName)} - {gameData[1].teamPoints} <img className="team-logo" src={mapCodeToLogo(gameData[1].teamName)}></img></Accordion.Header>
+          <Accordion.Header>see details</Accordion.Header>
           <Accordion.Body>
             <div className="container">
               <div className="row">
