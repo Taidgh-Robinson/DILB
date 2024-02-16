@@ -66,20 +66,20 @@ export function mapCodeToName(code: string) {
 }
 
 export function mapCodeToLogo(code: string) {
-    if (code === "ATL") { return "logos/ATL.svg"; }
+    if (code === "ATL") { return "logos/ATL.png"; }
     if (code === "BOS") { return "logos/BOS.png"; }
     if (code === "BKN") { return "logos/BKN.png"; }
     if (code === "CHA") { return "logos/CHA.png"; }
     if (code === "CHI") { return "logos/CHI.png"; }
     if (code === "CLE") { return "logos/CLE.png"; }
-    if (code === "DAL") { return "logos/DAL.svg"; }
-    if (code === "DEN") { return "logos/DEN.svg"; }
+    if (code === "DAL") { return "logos/DAL.png"; }
+    if (code === "DEN") { return "logos/DEN.png"; }
     if (code === "DET") { return "logos/DET.png"; }
     if (code === "GSW") { return "logos/GSW.png"; }
     if (code === "HOU") { return "logos/HOU.png"; }
     if (code === "IND") { return "logos/IND.png"; }
     if (code === "LAC") { return "logos/LAC.png"; }
-    if (code === "LAL") { return "logos/LAL.svg"; }
+    if (code === "LAL") { return "logos/LAL.png"; }
     if (code === "MEM") { return "logos/MEM.png"; }
     if (code === "MIA") { return "logos/MIA.png"; }
     if (code === "MIL") { return "logos/MIL.png"; }
@@ -89,7 +89,7 @@ export function mapCodeToLogo(code: string) {
     if (code === "OKC") { return "logos/OKC.png"; }
     if (code === "ORL") { return "logos/ORL.png"; }
     if (code === "PHI") { return "logos/PHI.png"; }
-    if (code === "PHX") { return "logos/PHX.svg"; }
+    if (code === "PHX") { return "logos/PHX.png"; }
     if (code === "POR") { return "logos/POR.png"; }
     if (code === "SAC") { return "logos/SAC.png"; }
     if (code === "SAS") { return "logos/SAS.png"; }
