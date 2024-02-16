@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: flask_backend
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    networks:
+      - my-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: react_frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    networks:
+      - my-network
+
+networks:
+  my-network:
