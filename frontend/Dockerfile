@@ -20,6 +20,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy build output to serve
 COPY --from=build /app/build /usr/share/nginx/html
 
+COPY bootstrap.min.css /usr/share/nginx/html/static/css
+
 # Expose port 80
 EXPOSE 80
 
