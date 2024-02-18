@@ -55,13 +55,17 @@ export function Game(props: gameProps) {
     return <div>No game data for some reason...</div>;
   }
 
+  if (gameData.length === 0) {
+    return <div>There were no games yesterday!</div>;
+  }
+
   return (
     <div style={{ textAlign: "center" }} className="Game" >
 
-      <h2>{mapCodeToName(gameData[0].teamName)} - {gameData[0].teamPoints} @ {mapCodeToName(gameData[1].teamName)} - {gameData[1].teamPoints}</h2>
+      <h2><img className="team-logo" src={mapCodeToLogo(gameData[0].teamName)}></img>{mapCodeToName(gameData[0].teamName)} - {gameData[0].teamPoints} @ {mapCodeToName(gameData[1].teamName)} - {gameData[1].teamPoints} <img className="team-logo" src={mapCodeToLogo(gameData[1].teamName)}></img></h2>
       <Accordion>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>see details</Accordion.Header>
+          <Accordion.Header>See Details (players who player 10+ minutes)</Accordion.Header>
           <Accordion.Body>
             <div className="container">
               <div className="row">
