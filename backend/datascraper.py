@@ -1,4 +1,4 @@
-from nba_api.stats.endpoints import scoreboard, boxscoretraditionalv2
+from nba_api.stats.endpoints import scoreboard, boxscoretraditionalv2, boxscorefourfactorsv2
 import os
 import pandas as pd
 from datetime import date
@@ -8,7 +8,7 @@ def get_game_ids():
     yesteday = date.today() - timedelta(days = 1)
     y = str(yesteday).split('-')
     y = str(y[1])+'/'+str(y[2])+'/'+str(y[0])
-    s = scoreboard.Scoreboard(game_date=y)
+    s = scoreboard.Scoreboard(game_date='2/14/2024')
     games = None
     for r in s.get_dict()['resultSets']:
         if r['name'] == 'LineScore':
@@ -29,6 +29,15 @@ def save_boxscore(game_id):
 
     return df
 
+def get_four_factors_dict(game_id):
+    game = boxscorefourfactorsv2.BoxScoreFourFactorsV2(game_id=game_id).get_dict()['resultSets'][1]
+    df = pd.DataFrame(game['rowSet'], columns = game['headers'])
+    rdict = {}
+    for index, row in df.iterrows():
+        rdict[row['TEAM_ABBREVIATION']] = [row['EFG_PCT'], row['FTA_RATE'], row['TM_TOV_PCT'], row['OREB_PCT']]
+
+    return rdict
+
 def calculate_game_score(row):
     try:
         #Game Score = PTS + 0.4 * FG - 0.7 * FGA - 0.4*(FTA - FT) + 0.7 * ORB + 0.3 * DRB + STL + 0.7 * AST + 0.7 * BLK - 0.4 * PF - TOV
@@ -40,7 +49,9 @@ def calculate_game_score(row):
 
     return gs
 
-def generate_api_dataframe(df):
+def generate_api_dataframe(df, game_id):
+    ff_dict = get_four_factors_dict(game_id)
+
     teams = set(df['TEAM_ABBREVIATION'])
     team_1_name = teams.pop()
     team_2_name = teams.pop()
@@ -50,6 +61,10 @@ def generate_api_dataframe(df):
     team_2_pts = int(team_2['PTS'].sum())
     team_1_victory = True if team_1_pts > team_2_pts else False
     team_2_victory = not team_1_victory
+
+    team_1_ff = ff_dict[team_1_name]
+    team_2_ff = ff_dict[team_2_name]
+
 
     best_pm_team_1 = get_max(team_1, 'PLUS_MINUS')
     best_pm_team_2 = get_max(team_2, 'PLUS_MINUS')
@@ -61,14 +76,15 @@ def generate_api_dataframe(df):
     worst_gs_team_1 = get_min(team_1, 'GAME_SCORE')
     worst_gs_team_2 = get_min(team_2, 'GAME_SCORE')
 
-    team_1_row = build_row(team_1_name, team_1_pts, team_1_victory, best_pm_team_1, worst_pm_team_1, best_gs_team_1, worst_gs_team_1)
-    team_2_row = build_row(team_2_name, team_2_pts, team_2_victory, best_pm_team_2, worst_pm_team_2, best_gs_team_2, worst_gs_team_2)
+    team_1_row = build_row(team_1_name, team_1_pts, team_1_victory, best_pm_team_1, worst_pm_team_1, best_gs_team_1, worst_gs_team_1, team_1_ff[0], team_1_ff[1], team_1_ff[2], team_1_ff[3])
+    team_2_row = build_row(team_2_name, team_2_pts, team_2_victory, best_pm_team_2, worst_pm_team_2, best_gs_team_2, worst_gs_team_2, team_2_ff[0], team_2_ff[1], team_2_ff[2], team_2_ff[3])
 
     COLUMNS=['TEAM_NAME', "TEAM_PTS", "TEAM_VIC", 
     "B_PM_NAME", "B_PM_PTS", "B_PM_REB", "B_PM_AST", "B_PM_PM", "B_PM_MIN", 
     "W_PM_NAME", "W_PM_PTS", "W_PM_REB", "W_PM_AST", "W_PM_PM", "W_PM_MIN",
     "B_GS_NAME", "B_GS_PTS", "B_GS_REB", "B_GS_AST", "B_GS_GS", "B_GS_MIN", 
-    "W_GS_NAME", "W_GS_PTS", "W_GS_REB", "W_GS_AST", "W_GS_GS", "W_GS_MIN"]
+    "W_GS_NAME", "W_GS_PTS", "W_GS_REB", "W_GS_AST", "W_GS_GS", "W_GS_MIN",
+    "EFG_PCT", "FTA_RATE", "TM_TOV_PCT", "OREB_PCT"]
 
     new_dataframe = pd.DataFrame([team_1_row, team_2_row], 
     columns=COLUMNS)
@@ -90,12 +106,13 @@ def get_max(df, column):
 def get_min(df, column):
     return df.loc[df[column].idxmin()]
 
-def build_row(team_name, team_pts, team_victory, best_pm, worst_pm, best_gs, worst_gs):
+def build_row(team_name, team_pts, team_victory, best_pm, worst_pm, best_gs, worst_gs, efg_pct, fta_rate, tm_tov_pct, oreb_pct):
     return [team_name, team_pts, team_victory,
     best_pm['PLAYER_NAME'], best_pm['PTS'], best_pm['REB'], best_pm['AST'], best_pm['PLUS_MINUS'], best_pm['MIN'],
     worst_pm['PLAYER_NAME'], worst_pm['PTS'], worst_pm['REB'], worst_pm['AST'], worst_pm['PLUS_MINUS'], worst_pm['MIN'],
     best_gs['PLAYER_NAME'], best_gs['PTS'], best_gs['REB'], best_gs['AST'], best_gs['GAME_SCORE'], best_gs['MIN'],
-    worst_gs['PLAYER_NAME'], worst_gs['PTS'], worst_gs['REB'], worst_gs['AST'], worst_gs['GAME_SCORE'], worst_gs['MIN']]
+    worst_gs['PLAYER_NAME'], worst_gs['PTS'], worst_gs['REB'], worst_gs['AST'], worst_gs['GAME_SCORE'], worst_gs['MIN'],
+    efg_pct, fta_rate, tm_tov_pct, oreb_pct]
 
 def generate_api_dataframes():
     for game_id in get_game_ids():
@@ -107,4 +124,4 @@ def generate_api_dataframes():
         #Filter out players who havent played enough (well say 10 minutes for now but this may change)
         df = df[df['MIN'] > 10]
 
-        generate_api_dataframe(df)
+        generate_api_dataframe(df, game_id)
